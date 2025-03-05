@@ -13,7 +13,12 @@ let isConnected = false; // Flag to track connection status
 
 // Create a new client using local authentication (saves session so you don't need to scan every time)
 const client = new Client({
-    authStrategy: new LocalAuth()
+    authStrategy: new LocalAuth(
+        {
+            clientId: "2221",
+            dataPath: "./whatsapp-session"
+        }),
+    puppeteer: { headless: true }
 });
 
 // Serve static files (QR Code image) via Express
@@ -120,7 +125,7 @@ app.get('/api/qr', (req, res) => {
                 return res.status(500).json({ error: 'Error generating QR code' });
             }
             // Send the QR code as a base64 image
-            res.json({ qrCode: "create Success" });
+            res.status(200).json({ qrCode: "create Success" });
         });
     });
 });
